@@ -42,7 +42,7 @@ mount /dev/sda1 /mnt
 
 
 #Устанавливаем based  и linux ядро + софт который нам нужен сразу
-pacstrap /mnt base linux linux-firmware netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet # parted
+pacstrap /mnt base base-devel linux linux-firmware netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet # parted
 
 # прописываем fstab
 genfstab -pU /mnt >> /mnt/etc/fstab
