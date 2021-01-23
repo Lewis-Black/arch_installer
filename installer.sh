@@ -5,7 +5,7 @@
 #/dev/sda3 - swap
 #/dev/sda4 - /home
 
-# Ставим быстрые репы
+# Быстрые репы
 
 > /etc/pacman.d/mirrorlist
 cat <<EOF >>/etc/pacman.d/mirrorlist
@@ -30,19 +30,13 @@ pacman-key --init
 pacman-key --populate archlinux
 pacman -Sy
 
-
-#Форматируем в ext 4 наш диск
-
+# Форматируем в ext 4 наш диск
 mkfs.ext4 /dev/sda1
-
-
 # Монтируем диск к папке
 mount /dev/sda1 /mnt
 
-
-
-#Устанавливаем based  и linux ядро + софт который нам нужен сразу
-pacstrap /mnt base base-devel linux linux-firmware netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet # parted
+# Устанавливаем based и linux ядро + софт который нам нужен сразу и ставим amd-ucode либо intel-ucode что-то одно на ваш процессор
+pacstrap /mnt base base-devel linux linux-firmware netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet intel-ucode  # parted
 
 # прописываем fstab
 genfstab -pU /mnt >> /mnt/etc/fstab
@@ -50,12 +44,10 @@ genfstab -pU /mnt >> /mnt/etc/fstab
 #Прокидываем правильные быстрые репы внутрь
 cp /etc/pacman.d/mirrorlist /mnt/etc/pacman.d/mirrorlist
 
-
 # Делаем скрипт пост инстала:
 cat <<EOF  >> /mnt/opt/install.sh
+
 #!/bin/bash
-
-
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
@@ -63,6 +55,8 @@ echo 'Обновим текущую локаль системы'
 locale-gen
 
 sleep 1
+
+# Прописываем свой регион и город 
 ln -sf /usr/share/zoneinfo/Asia/Irkutsk /etc/localtime
 echo "/dev/sda /    ext4 defaults 0 1" > /etc/fstab
 grub-install /dev/sda
@@ -72,16 +66,16 @@ pacman-key --populate archlinux
 pacman -Sy xorg xorg-server xorg-drivers sddm 
 pacman -Sy plasma 
 
+nano /etc/hostname
+mkinitcpio -p linux
 
 #stemctl start dm
-systemctl enable sddm.service
-systemctl enable sddm
-systemctl enable networkmanager
-systemctl enable NetworkManager
+systemctl enable sddm NetworkManager
 sleep 1
 echo "password for root user:"
 passwd
 echo "add new user"
+# Меняем 'lewis' на свой ник
 useradd -m -g users -G wheel -s /bin/bash lewis
 echo "paaswd for new user"
 passwd lewis
@@ -89,13 +83,9 @@ passwd lewis
 nano /etc/sudoers
 nano /etc/pacman.conf
 
-
-
 exit
-
 
 EOF
 
 arch-chroot /mnt /bin/bash  /opt/install.sh
-
 reboot
