@@ -36,7 +36,7 @@ mkfs.ext4 /dev/sda1
 mount /dev/sda1 /mnt
 
 # Устанавливаем based и linux ядро + софт который нам нужен сразу и ставим amd-ucode либо intel-ucode что-то одно на ваш процессор
-pacstrap /mnt base base-devel linux linux-firmware netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet intel-ucode  # parted
+pacstrap /mnt base base-devel linux linux-firmware linux-headers netctl dhcpcd nano sudo grub dolphin konsole firefox dhcpcd networkmanager network-manager-applet intel-ucode  # parted
 
 # прописываем fstab
 genfstab -pU /mnt >> /mnt/etc/fstab
