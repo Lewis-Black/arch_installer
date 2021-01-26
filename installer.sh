@@ -63,7 +63,7 @@ grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 pacman-key --init
 pacman-key --populate archlinux
-pacman -Sy xorg xorg-server xorg-drivers sddm 
+pacman -Sy xorg xorg-server sddm 
 pacman -Sy plasma 
 
 nano /etc/hostname
