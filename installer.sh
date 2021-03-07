@@ -63,7 +63,7 @@ grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 pacman-key --init
 pacman-key --populate archlinux
-pacman -Sy xorg xorg-server sddm 
+pacman -Sy xorg nvidia-dkms nvidia-utils lib32-nvidia-utils nvidia-settings vulkan-icd-loader lib32-vulkan-icd-loader sddm 
 pacman -Sy plasma 
 
 nano /etc/hostname
